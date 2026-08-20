@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title or "VeilMod Command Center" }}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cyber_animations.css') }}">
+
+    <!-- Prevent FOUC -->
+    <style>
+        body { opacity: 0; transition: opacity 0.15s ease; }
+    </style>
+</head>
+
+<body class="vm-body" onload="document.body.style.opacity='1'">
+
+<div class="vm-app">
+
+    <!-- SIDEBAR -->
+    <aside class="vm-sidebar vm-sidebar-expanded" id="vm-sidebar">
+
+        <!-- Sidebar Header -->
+        <div class="vm-sidebar-header">
+            <div class="vm-logo-wrap">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="VeilMod" class="vm-logo">
+            </div>
+
+            <button class="vm-sidebar-toggle" id="vm-sidebar-toggle">
+                <span class="vm-toggle-disc"></span>
+            </button>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="vm-sidebar-section">
+            <div class="vm-sidebar-section-title">NAVIGATION</div>
+
+            <a href="{{ url_for('dashboard') }}" class="vm-sidebar-item {% if active_page=='dashboard' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-dashboard"></span>
+                <span class="vm-sidebar-label">Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('qa') }}" class="vm-sidebar-item {% if active_page=='qa' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-qa"></span>
+                <span class="vm-sidebar-label">Q&A Manager</span>
+            </a>
+
+            <a href="{{ url_for('tickets') }}" class="vm-sidebar-item {% if active_page=='tickets' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-tickets"></span>
+                <span class="vm-sidebar-label">Tickets</span>
+            </a>
+
+            <a href="{{ url_for('staff') }}" class="vm-sidebar-item {% if active_page=='staff' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-staff"></span>
+                <span class="vm-sidebar-label">Staff Portal</span>
+            </a>
+
+            <a href="{{ url_for('logs') }}" class="vm-sidebar-item {% if active_page=='logs' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-logs"></span>
+                <span class="vm-sidebar-label">Logs</span>
+            </a>
+        </div>
+
+        <!-- TOOLS -->
+        <div class="vm-sidebar-section">
+            <div class="vm-sidebar-section-title">TOOLS</div>
+
+            <a href="{{ url_for('support_tools') }}" class="vm-sidebar-item {% if active_page=='support_tools' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-support"></span>
+                <span class="vm-sidebar-label">Support Tools</span>
+            </a>
+
+            <a href="{{ url_for('engagement_tools') }}" class="vm-sidebar-item {% if active_page=='engagement_tools' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-engagement"></span>
+                <span class="vm-sidebar-label">Engagement Tools</span>
+            </a>
+
+            <a href="{{ url_for('moderation_tools') }}" class="vm-sidebar-item {% if active_page=='moderation_tools' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-moderation"></span>
+                <span class="vm-sidebar-label">Moderation Tools</span>
+            </a>
+        </div>
+
+        <!-- SYSTEM -->
+        <div class="vm-sidebar-section">
+            <div class="vm-sidebar-section-title">SYSTEM</div>
+
+            <a href="{{ url_for('settings') }}" class="vm-sidebar-item {% if active_page=='settings' %}vm-active{% endif %}">
+                <span class="vm-icon-disc vm-icon-settings"></span>
+                <span class="vm-sidebar-label">Settings</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="vm-main" id="vm-main">
+
+        <!-- TOPBAR -->
+        <header class="vm-topbar">
+            <div class="vm-topbar-left">
+                <h1 class="vm-page-title">{{ page_title or "Dashboard" }}</h1>
+            </div>
+
+            <div class="vm-topbar-right">
+                {% if user %}
+                <div class="vm-user-pill">
+                    <span class="vm-user-name">{{ user.display_name or user.username }}</span>
+                    <span class="vm-user-role">{{ user.role or "Staff" }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <section class="vm-content">
+            {% block content %}{% endblock %}
+        </section>
+
+    </main>
+
+</div>
+
+<!-- JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/cyber_animations.js') }}"></script>
+
+<script>
+    /* COLLAPSIBLE SIDEBAR — HOLOGRAM FADE */
+    const sidebar = document.getElementById('vm-sidebar');
+    const toggle = document.getElementById('vm-sidebar-toggle');
+    const labels = document.querySelectorAll('.vm-sidebar-label');
+
+    if (toggle && sidebar) {
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('vm-sidebar-collapsed');
+
+            labels.forEach(label => {
+                if (sidebar.classList.contains('vm-sidebar-collapsed')) {
+                    label.classList.add('vm-label-hidden');
+                } else {
+                    label.classList.remove('vm-label-hidden');
+                }
+            });
+        });
+    }
+</script>
+
+</body>
+</html>

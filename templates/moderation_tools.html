@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        body { background:#0d0d0d; color:#e0e0e0; font-family:Arial; margin:0; }
+        header { background:#1a1a1a; padding:20px; border-bottom:1px solid #333;
+                 display:flex; justify-content:space-between; }
+        .container { padding:40px; }
+        .section { background:#1a1a1a; padding:25px; border-radius:10px;
+                   border:1px solid #333; margin-bottom:25px; }
+        input, textarea { width:100%; padding:10px; background:#0d0d0d;
+                          border:1px solid #333; border-radius:6px; color:#e0e0e0; }
+        button { margin-top:15px; padding:10px 18px; background:#4a4aff;
+                 color:white; border:none; border-radius:6px; cursor:pointer; }
+        button:hover { background:#6a6aff; }
+        .log { background:#0d0d0d; padding:15px; border-radius:8px;
+               border:1px solid #333; margin-bottom:10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Moderation Tools</h1>
+    <div>Logged in as <strong>{{ user.username }}</strong></div>
+</header>
+
+<div class="container">
+
+    <div class="section">
+        <h2>Moderation Action</h2>
+        <form method="POST" action="/moderation/action">
+            <label>User ID</label>
+            <input type="text" name="user_id">
+
+            <label>Action (Warn, Kick, Ban, Mute, Unmute)</label>
+            <input type="text" name="action">
+
+            <label>Reason</label>
+            <textarea name="reason" rows="3"></textarea>
+
+            <button>Submit Action</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>Moderation Logs</h2>
+        {% if logs %}
+            {% for log in logs %}
+                <div class="log">
+                    <strong>{{ log.action }}</strong><br>
+                    Staff: {{ log.staff_name }}<br>
+                    Target: {{ log.target_user_id }}<br>
+                    Time: {{ log.timestamp }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No logs found.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

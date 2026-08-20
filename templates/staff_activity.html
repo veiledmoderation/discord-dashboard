@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% set active_page = "staff" %}
+{% set page_title = "Staff Activity" %}
+
+{% block content %}
+
+<div class="vm-dashboard-grid">
+
+    <!-- ACTIVITY LOG -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Activity Log — {{ staff.display_name or staff.username }}</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            {% if staff_activity %}
+                <ul class="vm-log-list">
+                    {% for entry in staff_activity %}
+                        <li class="vm-log-item">
+                            <span class="vm-log-time">{{ entry.time }}</span>
+                            <span class="vm-log-text">{{ entry.text }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty">No activity recorded for this staff member.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="vm-card">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Actions</span>
+        </div>
+
+        <div class="vm-card-body vm-quick-actions">
+            <a href="{{ url_for('staff_profile', user_id=staff.id) }}" class="vm-btn vm-btn-primary">Back to Profile</a>
+            <a href="{{ url_for('staff') }}" class="vm-btn vm-btn-secondary">Staff List</a>
+            <a href="{{ url_for('logs') }}" class="vm-btn vm-btn-secondary">View Logs</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
