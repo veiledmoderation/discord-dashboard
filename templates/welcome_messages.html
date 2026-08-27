@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% set active_page = "engagement" %}
+{% set page_title = "Welcome Messages" %}
+
+{% block content %}
+
+<div class="vm-dashboard-grid">
+
+    <!-- WELCOME MESSAGE SETTINGS -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Welcome Message Settings</span>
+        </div>
+
+        <div class="vm-card-body">
+            <form action="/engagement/welcome/update" method="POST" class="vm-form">
+
+                <div class="vm-form-group">
+                    <label>Welcome Channel ID</label>
+                    <input type="text" name="welcome_channel" class="vm-input"
+                           value="{{ config.welcome_channel or '' }}">
+                </div>
+
+                <div class="vm-form-group">
+                    <label>Welcome Message</label>
+                    <textarea name="welcome_message" class="vm-textarea" rows="4">{{ config.welcome_message or '' }}</textarea>
+                </div>
+
+                <button class="vm-btn vm-btn-primary">Save Welcome Message</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- LIVE WELCOME FEED -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Live Welcome Events</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            <!-- LIVE FEED -->
+            <div id="welcome-live-list" class="vm-live-feed"></div>
+
+            <!-- STATIC INFO -->
+            <div class="vm-info-text">
+                When new members join and welcome messages are triggered, they will appear here in real time.
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

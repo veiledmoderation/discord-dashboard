@@ -1,19 +1,47 @@
 {% extends "base.html" %}
-{% block content %}
+{% set page_title = "Dashboard" %}
 
-<div class="section">
-    <h2>Dashboard</h2>
-    <p>Welcome, {{ user.username }}.</p>
+{% block body %}
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Overview</span></div>
+        <div class="vm-card-body vm-stats-grid">
+
+            <div class="vm-stat">
+                <h3>Total Users</h3>
+                <p>{{ stats.total_users }}</p>
+            </div>
+
+            <div class="vm-stat">
+                <h3>Tickets Today</h3>
+                <p>{{ stats.tickets_today }}</p>
+            </div>
+
+            <div class="vm-stat">
+                <h3>Active Staff</h3>
+                <p>{{ stats.active_staff }}</p>
+            </div>
+
+            <div class="vm-stat">
+                <h3>Moderation Actions Today</h3>
+                <p>{{ stats.mod_actions_today }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Quick Links</span></div>
+        <div class="vm-card-body vm-quick-actions">
+            <a class="vm-btn vm-btn-primary" href="/tickets">Tickets</a>
+            <a class="vm-btn vm-btn-primary" href="/staff">Staff</a>
+            <a class="vm-btn vm-btn-primary" href="/logs">Logs</a>
+            <a class="vm-btn vm-btn-primary" href="/settings">Settings</a>
+            <a class="vm-btn vm-btn-primary" href="/qna">Q&A Manager</a>
+            <a class="vm-btn vm-btn-primary" href="/ping-everyone">Ping Everyone</a>
+        </div>
+    </div>
+
 </div>
-
-<div class="section">
-    <h3>Quick Actions</h3>
-    <a class="button" href="/server">Manage Server</a>
-    <a class="button" href="/commands">Commands</a>
-    <a class="button" href="/moderation">Moderation</a>
-    <a class="button" href="/support">Support Tools</a>
-    <a class="button" href="/engagement">Engagement Tools</a>
-    <a class="button" href="/qna">Q&A Manager</a>
-</div>
-
 {% endblock %}

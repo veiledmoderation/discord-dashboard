@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Announcements</h2>
+
+<div class="vm-dashboard-grid">
+
+    <!-- CREATE ANNOUNCEMENT -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Create Announcement</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            <form action="/announcements/create" method="POST" class="vm-form">
+
+                <div class="vm-form-group">
+                    <label>Select Channel</label>
+                    <select name="channel_id" class="vm-input">
+                        {% for ch in channels %}
+                        <option value="{{ ch.id }}">{{ ch.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="vm-form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" class="vm-input" required>
+                </div>
+
+                <div class="vm-form-group">
+                    <label>Message</label>
+                    <textarea name="content" class="vm-textarea" rows="4" required></textarea>
+                </div>
+
+                <button class="vm-btn vm-btn-primary">Send Announcement</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENT HISTORY -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Announcement History</span>
+        </div>
+
+        <div class="vm-card-body">
+            {% for a in announcements %}
+            <div class="vm-log-item">
+                <strong>{{ a.title }}</strong><br>
+                {{ a.content }}<br>
+                Channel: {{ a.channel_id }}<br>
+                Time: {{ a.timestamp }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

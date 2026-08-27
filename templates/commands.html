@@ -1,78 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <style>
-        body {
-            background: #0d0d0d;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #1a1a1a;
-            padding: 20px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        header h1 {
-            margin: 0;
-        }
-        .user-box {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-        .container {
-            padding: 40px;
-        }
-        .command {
-            background: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #333;
-            margin-bottom: 20px;
-        }
-        .command h2 {
-            margin-top: 0;
-        }
-        .desc {
-            opacity: 0.85;
-            margin-bottom: 10px;
-        }
-        .usage {
-            font-size: 14px;
-            opacity: 0.7;
-        }
-    </style>
-</head>
-<body>
+{% extends "layout.html" %}
+{% set active_page = "commands" %}
+{% set page_title = "Commands" %}
 
-<header>
-    <h1>Commands</h1>
-    <div class="user-box">
-        Logged in as <strong>{{ user.username }}</strong>
+{% block content %}
+
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Bot Commands</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            <table class="vm-table">
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Description</th>
+                        <th>Usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/ban</td>
+                        <td>Ban a user from the server</td>
+                        <td>/ban @user reason</td>
+                    </tr>
+                    <tr>
+                        <td>/kick</td>
+                        <td>Kick a user from the server</td>
+                        <td>/kick @user reason</td>
+                    </tr>
+                    <tr>
+                        <td>/mute</td>
+                        <td>Mute a user</td>
+                        <td>/mute @user duration</td>
+                    </tr>
+                    <tr>
+                        <td>/warn</td>
+                        <td>Warn a user</td>
+                        <td>/warn @user reason</td>
+                    </tr>
+                    <tr>
+                        <td>/ticket</td>
+                        <td>Create a support ticket</td>
+                        <td>/ticket subject</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
-</header>
-
-<div class="container">
-
-    {% if commands %}
-        {% for cmd in commands %}
-            <div class="command">
-                <h2>{{ cmd.name }}</h2>
-                <p class="desc">{{ cmd.description }}</p>
-                <p class="usage"><strong>Usage:</strong> {{ cmd.usage }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No commands found.</p>
-    {% endif %}
 
 </div>
 
-</body>
-</html>
+{% endblock %}

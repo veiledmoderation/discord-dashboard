@@ -1,71 +1,30 @@
-{% extends "layout.html" %}
-{% set active_page = "staff" %}
-{% set page_title = "Staff Portal" %}
+{% extends "base.html" %}
+{% set page_title = "Staff" %}
 
-{% block content %}
-
+{% block body %}
 <div class="vm-dashboard-grid">
 
-    <!-- STAFF LIST -->
     <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Staff Members</span>
-        </div>
-
+        <div class="vm-card-header"><span class="vm-card-title">Staff Members</span></div>
         <div class="vm-card-body">
 
-            {% if staff_list %}
-                <table class="vm-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Status</th>
-                            <th>Profile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for member in staff_list %}
-                        <tr>
-                            <td>{{ member.display_name or member.username }}</td>
-                            <td>{{ member.role }}</td>
-                            <td>
-                                {% if member.online %}
-                                    <span class="vm-status-online">Online</span>
-                                {% else %}
-                                    <span class="vm-status-offline">Offline</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ url_for('staff_profile', user_id=member.id) }}" class="vm-btn vm-btn-secondary">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
+            {% if staff %}
+                <ul class="vm-list">
+                    {% for s in staff %}
+                    <li class="vm-list-item">
+                        <a href="/staff/profile/{{ s.user_id }}">
+                            <strong>{{ s.name }}</strong>
+                            <span class="vm-tag">{{ s.role }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
             {% else %}
-                <p class="vm-empty">No staff members found.</p>
+                <p class="vm-empty">No staff found.</p>
             {% endif %}
 
         </div>
     </div>
 
-    <!-- QUICK STAFF ACTIONS -->
-    <div class="vm-card">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Quick Staff Actions</span>
-        </div>
-
-        <div class="vm-card-body vm-quick-actions">
-            <a href="{{ url_for('tickets') }}" class="vm-btn vm-btn-primary">View Tickets</a>
-            <a href="{{ url_for('logs') }}" class="vm-btn vm-btn-secondary">View Logs</a>
-            <a href="{{ url_for('moderation_tools') }}" class="vm-btn vm-btn-secondary">Moderation Tools</a>
-        </div>
-    </div>
-
 </div>
-
 {% endblock %}

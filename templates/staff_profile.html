@@ -1,65 +1,99 @@
-{% extends "layout.html" %}
-{% set active_page = "staff" %}
-{% set page_title = "Staff Profile" %}
+{% extends "base.html" %}
 
-{% block content %}
+{% block body %}
 
 <div class="vm-dashboard-grid">
 
-    <!-- PROFILE CARD -->
+    <!-- STAFF HEADER -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Staff Profile — {{ staff.name }}</span>
+        </div>
+
+        <div class="vm-card-body">
+            <p><strong>Name:</strong> {{ staff.name }}</p>
+            <p><strong>User ID:</strong> {{ staff.user_id }}</p>
+            <p><strong>Role:</strong> {{ staff.role }}</p>
+            <p><strong>Status:</strong> {{ staff.status }}</p>
+            <p><strong>Joined:</strong> {{ staff.joined }}</p>
+        </div>
+    </div>
+
+    <!-- TICKET STATS -->
     <div class="vm-card">
         <div class="vm-card-header">
-            <span class="vm-card-title">Profile Overview</span>
+            <span class="vm-card-title">Tickets This Month</span>
+        </div>
+        <div class="vm-card-body">
+            <p>{{ tickets_month }}</p>
+        </div>
+    </div>
+
+    <div class="vm-card">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Total Tickets</span>
+        </div>
+        <div class="vm-card-body">
+            <p>{{ tickets_total }}</p>
+        </div>
+    </div>
+
+    <!-- RATING -->
+    <div class="vm-card">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Rating</span>
+        </div>
+        <div class="vm-card-body">
+            <p>Average Rating: {{ rating_avg }}/5</p>
+            <p>Total Ratings: {{ rating_count }}</p>
+        </div>
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Feedback</span>
         </div>
 
         <div class="vm-card-body">
 
-            <div class="vm-profile-row">
-                <span class="vm-profile-label">Name:</span>
-                <span class="vm-profile-value">{{ staff.display_name or staff.username }}</span>
-            </div>
-
-            <div class="vm-profile-row">
-                <span class="vm-profile-label">Role:</span>
-                <span class="vm-profile-value">{{ staff.role }}</span>
-            </div>
-
-            <div class="vm-profile-row">
-                <span class="vm-profile-label">Status:</span>
-                {% if staff.online %}
-                    <span class="vm-status-online">Online</span>
-                {% else %}
-                    <span class="vm-status-offline">Offline</span>
-                {% endif %}
-            </div>
-
-            <div class="vm-profile-row">
-                <span class="vm-profile-label">Joined:</span>
-                <span class="vm-profile-value">{{ staff.joined or "Unknown" }}</span>
-            </div>
+            {% if feedback %}
+                <ul class="vm-log-list">
+                    {% for f in feedback %}
+                    <li class="vm-log-item">
+                        <span class="vm-log-text">
+                            <strong>{{ f.user }}</strong> — Rating: {{ f.rating }}/5
+                            <br>
+                            {{ f.comment }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty">No feedback available.</p>
+            {% endif %}
 
         </div>
     </div>
 
-    <!-- ACTIVITY CARD -->
+    <!-- ACTIVITY LOG -->
     <div class="vm-card vm-card-wide">
         <div class="vm-card-header">
-            <span class="vm-card-title">Recent Activity</span>
+            <span class="vm-card-title">Activity Log</span>
         </div>
 
         <div class="vm-card-body">
 
-            {% if staff_activity %}
+            {% if activity_log %}
                 <ul class="vm-log-list">
-                    {% for entry in staff_activity %}
-                        <li class="vm-log-item">
-                            <span class="vm-log-time">{{ entry.time }}</span>
-                            <span class="vm-log-text">{{ entry.text }}</span>
-                        </li>
+                    {% for entry in activity_log %}
+                    <li class="vm-log-item">
+                        <span class="vm-log-text">{{ entry }}</span>
+                    </li>
                     {% endfor %}
                 </ul>
             {% else %}
-                <p class="vm-empty">No recent activity recorded.</p>
+                <p class="vm-empty">No activity recorded.</p>
             {% endif %}
 
         </div>
@@ -68,13 +102,13 @@
     <!-- QUICK ACTIONS -->
     <div class="vm-card">
         <div class="vm-card-header">
-            <span class="vm-card-title">Actions</span>
+            <span class="vm-card-title">Quick Actions</span>
         </div>
 
         <div class="vm-card-body vm-quick-actions">
-            <a href="{{ url_for('tickets') }}" class="vm-btn vm-btn-primary">View Tickets</a>
-            <a href="{{ url_for('logs') }}" class="vm-btn vm-btn-secondary">View Logs</a>
-            <a href="{{ url_for('staff_activity', user_id=staff.id) }}" class="vm-btn vm-btn-secondary">Full Activity</a>
+            <a href="/staff" class="vm-btn vm-btn-primary">Back to Staff</a>
+            <a href="/logs" class="vm-btn vm-btn-secondary">View Logs</a>
+            <a href="/dashboard" class="vm-btn vm-btn-secondary">Dashboard</a>
         </div>
     </div>
 

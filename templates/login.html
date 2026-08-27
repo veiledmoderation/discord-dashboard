@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Login</title>
-    <style>
-        body {
-            background: #0d0d0d;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .box {
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid #333;
-        }
-        a {
-            display: inline-block;
-            padding: 12px 20px;
-            background: #4a4aff;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            margin-top: 20px;
-        }
-        a:hover {
-            background: #6a6aff;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-<body>
-    <div class="box">
-        <h1>Rituals Dashboard</h1>
-        <p>Login with Discord to continue</p>
-        <a href="/auth/discord">Login with Discord</a>
-    </div>
+
+<body class="vm-login-body">
+
+<div class="vm-login-box">
+
+    <h1>Login</h1>
+
+    <form method="POST" action="/login">
+
+        <input type="text" name="username" class="vm-input"
+               placeholder="Username" required>
+
+        <input type="password" name="password" class="vm-input"
+               placeholder="Password" required>
+
+        <button class="vm-btn vm-btn-primary">Login</button>
+
+    </form>
+
+    {% if error %}
+    <p class="vm-error">{{ error }}</p>
+    {% endif %}
+
+</div>
+
 </body>
 </html>

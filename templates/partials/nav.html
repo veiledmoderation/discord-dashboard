@@ -1,49 +1,17 @@
 <nav class="sidebar">
-    <h2 class="sidebar-title">Rituals</h2>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+    </div>
 
     <ul>
         <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/servers">Servers</a></li>
-        <li><a href="/commands">Commands</a></li>
+        <li><a href="/tickets">Tickets</a></li>
+        <li><a href="/staff">Staff</a></li>
+        <li><a href="/logs">Logs</a></li>
         <li><a href="/settings">Settings</a></li>
-        <li><a href="/support">Support Tools</a></li>
-        <li><a href="/engagement">Engagement Tools</a></li>
-        <li><a href="/moderation">Moderation Tools</a></li>
         <li><a href="/qna">Q&A Manager</a></li>
+        <li><a href="/ping-everyone">Ping Everyone</a></li>
+        <li><a href="/announcements">Announcements</a></li>
+        <li><a href="/autorole">Autorole</a></li>
     </ul>
 </nav>
-
-<style>
-.sidebar {
-    width: 240px;
-    background: #111;
-    height: 100vh;
-    position: fixed;
-    border-right: 1px solid #333;
-    padding: 20px;
-}
-
-.sidebar-title {
-    margin-top: 0;
-    margin-bottom: 20px;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-    color: #e0e0e0;
-    text-decoration: none;
-    font-size: 15px;
-}
-
-.sidebar ul li a:hover {
-    color: #4a4aff;
-}
-</style>

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% set page_title = "Ticket View" %}
+
+{% block body %}
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Ticket #{{ ticket.id }}</span>
+        </div>
+
+        <div class="vm-card-body">
+            <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+            <p><strong>Status:</strong> {{ ticket.status }}</p>
+        </div>
+    </div>
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Messages</span></div>
+        <div class="vm-card-body">
+
+            {% if ticket.messages %}
+                <ul class="vm-log-list">
+                    {% for m in ticket.messages %}
+                    <li class="vm-log-item">
+                        <span class="vm-log-text">
+                            <strong>{{ m.author }}</strong>: {{ m.text }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty">No messages yet.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Reply</span></div>
+        <div class="vm-card-body">
+            <form method="POST" action="/tickets/reply/{{ ticket.id }}">
+                <textarea name="message" class="vm-input" placeholder="Reply..."></textarea>
+                <button class="vm-btn vm-btn-primary">Send Reply</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

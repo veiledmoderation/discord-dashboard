@@ -1,19 +1,32 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
+{% set active_page = "servers" %}
+{% set page_title = "Server" %}
+
 {% block content %}
 
-<div class="section">
-    <h2>{{ server.name }}</h2>
-    <p>ID: {{ server.id }}</p>
-</div>
+<div class="vm-dashboard-grid">
 
-<div class="section">
-    <h3>Server Tools</h3>
-    <a class="button" href="/commands">Commands</a>
-    <a class="button" href="/moderation">Moderation</a>
-    <a class="button" href="/support">Support Tools</a>
-    <a class="button" href="/engagement">Engagement Tools</a>
-    <a class="button" href="/qna">Q&A Manager</a>
-    <a class="button" href="/settings">Settings</a>
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">{{ guilds[0].name }} — Server Overview</span>
+        </div>
+
+        <div class="vm-card-body">
+            <p><strong>Server ID:</strong> {{ guilds[0].id }}</p>
+
+            <hr>
+
+            <div class="vm-quick-actions">
+                <a href="/commands" class="vm-btn vm-btn-primary">Commands</a>
+                <a href="/moderation" class="vm-btn vm-btn-secondary">Moderation Tools</a>
+                <a href="/support" class="vm-btn vm-btn-secondary">Support Tools</a>
+                <a href="/engagement" class="vm-btn vm-btn-secondary">Engagement Tools</a>
+                <a href="/qna" class="vm-btn vm-btn-secondary">Q&A Manager</a>
+                <a href="/settings" class="vm-btn vm-btn-secondary">Settings</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {% endblock %}

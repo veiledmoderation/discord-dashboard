@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% set page_title = "Error" %}
+
+{% block content %}
+
+<div class="vm-card vm-card-wide">
+    <div class="vm-card-header">
+        <span class="vm-card-title">An Error Occurred</span>
+    </div>
+
+    <div class="vm-card-body">
+        <p>{{ message }}</p>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,66 +1,69 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <style>
-        body { background:#0d0d0d; color:#e0e0e0; font-family:Arial; margin:0; }
-        header { background:#1a1a1a; padding:20px; border-bottom:1px solid #333;
-                 display:flex; justify-content:space-between; }
-        .container { padding:40px; }
-        .section { background:#1a1a1a; padding:25px; border-radius:10px;
-                   border:1px solid #333; margin-bottom:25px; }
-        input, textarea { width:100%; padding:10px; background:#0d0d0d;
-                          border:1px solid #333; border-radius:6px; color:#e0e0e0; }
-        button { margin-top:15px; padding:10px 18px; background:#4a4aff;
-                 color:white; border:none; border-radius:6px; cursor:pointer; }
-        button:hover { background:#6a6aff; }
-        .log { background:#0d0d0d; padding:15px; border-radius:8px;
-               border:1px solid #333; margin-bottom:10px; }
-    </style>
-</head>
-<body>
+{% extends "layout.html" %}
+{% set active_page = "moderation" %}
+{% set page_title = "Moderation Tools" %}
 
-<header>
-    <h1>Moderation Tools</h1>
-    <div>Logged in as <strong>{{ user.username }}</strong></div>
-</header>
+{% block content %}
 
-<div class="container">
+<div class="vm-dashboard-grid">
 
-    <div class="section">
-        <h2>Moderation Action</h2>
-        <form method="POST" action="/moderation/action">
-            <label>User ID</label>
-            <input type="text" name="user_id">
+    <!-- MODERATION ACTIONS -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Moderation Actions</span>
+        </div>
 
-            <label>Action (Warn, Kick, Ban, Mute, Unmute)</label>
-            <input type="text" name="action">
+        <div class="vm-card-body">
+            <form action="/moderation/action" method="POST" class="vm-form">
 
-            <label>Reason</label>
-            <textarea name="reason" rows="3"></textarea>
+                <div class="vm-form-group">
+                    <label>User ID</label>
+                    <input type="text" name="user_id" class="vm-input" required>
+                </div>
 
-            <button>Submit Action</button>
-        </form>
+                <div class="vm-form-group">
+                    <label>Action</label>
+                    <select name="action" class="vm-input" required>
+                        <option value="warn">Warn</option>
+                        <option value="kick">Kick</option>
+                        <option value="ban">Ban</option>
+                    </select>
+                </div>
+
+                <div class="vm-form-group">
+                    <label>Reason</label>
+                    <textarea name="reason" class="vm-textarea" rows="3" required></textarea>
+                </div>
+
+                <button class="vm-btn vm-btn-primary">Submit Action</button>
+            </form>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Moderation Logs</h2>
-        {% if logs %}
+    <!-- MODERATION LOGS (LIVE) -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Moderation Logs</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            <!-- LIVE FEED -->
+            <div id="moderation-live-list" class="vm-live-feed"></div>
+
+            <!-- EXISTING LOGS -->
             {% for log in logs %}
-                <div class="log">
-                    <strong>{{ log.action }}</strong><br>
-                    Staff: {{ log.staff_name }}<br>
-                    Target: {{ log.target_user_id }}<br>
-                    Time: {{ log.timestamp }}
-                </div>
+            <div class="vm-log-item">
+                <strong>{{ log.action }}</strong><br>
+                Staff: {{ log.staff_name }}<br>
+                Target: {{ log.target_user_id }}<br>
+                Reason: {{ log.reason }}<br>
+                Time: {{ log.timestamp }}
+            </div>
             {% endfor %}
-        {% else %}
-            <p>No logs found.</p>
-        {% endif %}
+
+        </div>
     </div>
 
 </div>
 
-</body>
-</html>
+{% endblock %}

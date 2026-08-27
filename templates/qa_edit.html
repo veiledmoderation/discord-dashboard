@@ -1,130 +1,23 @@
-{% extends "layout.html" %}
-{% set active_page = "moderation_tools" %}
-{% set page_title = "Moderation Tools" %}
+{% extends "base.html" %}
+{% set page_title = "Edit Q&A" %}
 
-{% block content %}
-
+{% block body %}
 <div class="vm-dashboard-grid">
 
-    <!-- MODERATION ACTIONS -->
     <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Moderation Actions</span>
-        </div>
-
+        <div class="vm-card-header"><span class="vm-card-title">Edit Q&A</span></div>
         <div class="vm-card-body">
 
-            <form method="post" action="{{ url_for('mod_action') }}" class="vm-settings-form">
+            <p><strong>Question:</strong> {{ question.question }}</p>
 
-                <div class="vm-form-group">
-                    <label>User ID:</label>
-                    <input type="text" name="user_id" placeholder="Enter user ID" required>
-                </div>
-
-                <div class="vm-form-group">
-                    <label>Action:</label>
-                    <select name="action" class="vm-select" required>
-                        <option value="warn">Warn</option>
-                        <option value="mute">Mute</option>
-                        <option value="kick">Kick</option>
-                        <option value="ban">Ban</option>
-                        <option value="unban">Unban</option>
-                    </select>
-                </div>
-
-                <div class="vm-form-group">
-                    <label>Reason:</label>
-                    <textarea name="reason" class="vm-textarea" placeholder="Optional reason"></textarea>
-                </div>
-
-                <button type="submit" class="vm-btn vm-btn-primary">Execute Action</button>
-
+            <form method="POST" class="vm-form">
+                <label>Answer</label>
+                <textarea name="answer" class="vm-input">{{ question.answer }}</textarea>
+                <button class="vm-btn vm-btn-primary">Save</button>
             </form>
 
         </div>
     </div>
 
-    <!-- ACTIVE MUTES -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Active Mutes</span>
-        </div>
-
-        <div class="vm-card-body">
-
-            {% if active_mutes %}
-                <table class="vm-table">
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Muted At</th>
-                            <th>Ends</th>
-                            <th>Unmute</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for m in active_mutes %}
-                        <tr>
-                            <td>{{ m.user }}</td>
-                            <td>{{ m.start }}</td>
-                            <td>{{ m.end }}</td>
-                            <td>
-                                <a href="{{ url_for('mod_unmute', user_id=m.user_id) }}" class="vm-btn vm-btn-secondary">
-                                    Unmute
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p class="vm-empty">No active mutes.</p>
-            {% endif %}
-
-        </div>
-    </div>
-
-    <!-- RECENT MODERATION LOGS -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Recent Moderation Logs</span>
-        </div>
-
-        <div class="vm-card-body">
-
-            {% if mod_logs %}
-                <ul class="vm-log-list">
-                    {% for log in mod_logs %}
-                        <li class="vm-log-item">
-                            <span class="vm-log-time">{{ log.time }}</span>
-                            <span class="vm-log-text">
-                                <strong>{{ log.action|capitalize }}</strong> —
-                                {{ log.user }} —
-                                {{ log.reason or "No reason provided" }}
-                            </span>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="vm-empty">No moderation logs found.</p>
-            {% endif %}
-
-        </div>
-    </div>
-
-    <!-- QUICK ACTIONS -->
-    <div class="vm-card">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Quick Actions</span>
-        </div>
-
-        <div class="vm-card-body vm-quick-actions">
-            <a href="{{ url_for('dashboard') }}" class="vm-btn vm-btn-primary">Dashboard</a>
-            <a href="{{ url_for('logs') }}" class="vm-btn vm-btn-secondary">View Logs</a>
-            <a href="{{ url_for('staff') }}" class="vm-btn vm-btn-secondary">Staff Portal</a>
-        </div>
-    </div>
-
 </div>
-
 {% endblock %}

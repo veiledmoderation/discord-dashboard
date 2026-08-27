@@ -1,66 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <style>
-        body { background:#0d0d0d; color:#e0e0e0; font-family:Arial; margin:0; }
-        header { background:#1a1a1a; padding:20px; border-bottom:1px solid #333;
-                 display:flex; justify-content:space-between; }
-        .container { padding:40px; }
-        .section { background:#1a1a1a; padding:25px; border-radius:10px;
-                   border:1px solid #333; margin-bottom:25px; }
-        input, textarea { width:100%; padding:10px; background:#0d0d0d;
-                          border:1px solid #333; border-radius:6px; color:#e0e0e0; }
-        button { margin-top:15px; padding:10px 18px; background:#4a4aff;
-                 color:white; border:none; border-radius:6px; cursor:pointer; }
-        button:hover { background:#6a6aff; }
-        .event { background:#0d0d0d; padding:15px; border-radius:8px;
-                 border:1px solid #333; margin-bottom:10px; }
-    </style>
-</head>
-<body>
+{% extends "layout.html" %}
+{% set active_page = "engagement" %}
+{% set page_title = "Engagement Tools" %}
 
-<header>
-    <h1>Engagement Tools</h1>
-    <div>Logged in as <strong>{{ user.username }}</strong></div>
-</header>
+{% block content %}
 
-<div class="container">
+<div class="vm-dashboard-grid">
 
-    <div class="section">
-        <h2>Create Event</h2>
-        <form method="POST" action="/engagement/create">
-            <label>Event Type</label>
-            <input type="text" name="event_type">
+    <!-- ENGAGEMENT ACTIONS -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Engagement Actions</span>
+        </div>
 
-            <label>Description</label>
-            <textarea name="description" rows="4"></textarea>
+        <div class="vm-card-body">
+            <div class="vm-engagement-actions">
 
-            <button>Create Event</button>
-        </form>
+                <a href="/engagement/welcome" class="vm-btn vm-btn-primary">
+                    Welcome Messages
+                </a>
+
+                <a href="/engagement/auto_roles" class="vm-btn vm-btn-secondary">
+                    Auto Roles
+                </a>
+
+                <a href="/engagement/announcements" class="vm-btn vm-btn-secondary">
+                    Announcements
+                </a>
+
+                <form action="/engagement/ping" method="POST" class="vm-form vm-inline-form">
+                    <input type="text" name="message" class="vm-input" placeholder="Ping message…" required>
+                    <button class="vm-btn vm-btn-danger">Ping Everyone</button>
+                </form>
+
+            </div>
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Events</h2>
-        {% if events %}
-            {% for e in events %}
-                <div class="event">
-                    <strong>ID:</strong> {{ e.id }}<br>
-                    <strong>Type:</strong> {{ e.event_type }}<br>
-                    <strong>Description:</strong> {{ e.description }}<br>
-                    <strong>Status:</strong> {{ e.status }}<br>
-                    <form method="POST" action="/engagement/close/{{ e.id }}">
-                        <button>Close Event</button>
-                    </form>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No events found.</p>
-        {% endif %}
+    <!-- LIVE ENGAGEMENT FEED -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Live Engagement Feed</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            <!-- LIVE FEED -->
+            <div id="engagement-live-list" class="vm-live-feed"></div>
+
+            <!-- STATIC INFO -->
+            <div class="vm-info-text">
+                Engagement events (welcome messages, auto roles, announcements, pings) will appear here in real time.
+            </div>
+
+        </div>
     </div>
 
 </div>
 
-</body>
-</html>
+{% endblock %}

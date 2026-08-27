@@ -1,58 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <style>
-        body { background:#0d0d0d; color:#e0e0e0; font-family:Arial; margin:0; }
-        header { background:#1a1a1a; padding:20px; border-bottom:1px solid #333;
-                 display:flex; justify-content:space-between; }
-        .container { padding:40px; }
-        .section { background:#1a1a1a; padding:25px; border-radius:10px;
-                   border:1px solid #333; margin-bottom:25px; }
-        input, textarea { width:100%; padding:10px; background:#0d0d0d;
-                          border:1px solid #333; border-radius:6px; color:#e0e0e0; }
-        button { margin-top:15px; padding:10px 18px; background:#4a4aff;
-                 color:white; border:none; border-radius:6px; cursor:pointer; }
-        button:hover { background:#6a6aff; }
-        .ticket { background:#0d0d0d; padding:15px; border-radius:8px;
-                  border:1px solid #333; margin-bottom:10px; }
-    </style>
-</head>
-<body>
+{% extends "layout.html" %}
+{% set active_page = "support" %}
+{% set page_title = "Support Tools" %}
 
-<header>
-    <h1>Support Tools</h1>
-    <div>Logged in as <strong>{{ user.username }}</strong></div>
-</header>
+{% block content %}
 
-<div class="container">
+<div class="vm-dashboard-grid">
 
-    <div class="section">
-        <h2>Create Ticket</h2>
-        <form method="POST" action="/support/create">
-            <label>Issue</label>
-            <textarea name="issue" rows="4"></textarea>
-            <button>Create Ticket</button>
-        </form>
+    <!-- USER LOOKUP -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">User Lookup</span>
+        </div>
+
+        <div class="vm-card-body">
+            <form action="/support/lookup" method="POST" class="vm-form">
+
+                <div class="vm-form-group">
+                    <label>User ID</label>
+                    <input type="text" name="user_id" class="vm-input" required>
+                </div>
+
+                <button class="vm-btn vm-btn-primary">Lookup</button>
+            </form>
+
+            {% if lookup %}
+            <div class="vm-lookup-result">
+                <strong>Lookup Result:</strong><br>
+                User ID: {{ lookup }}<br>
+                (Bot integration will display more details here)
+            </div>
+            {% endif %}
+        </div>
     </div>
 
-    <div class="section">
-        <h2>Tickets</h2>
-        {% if tickets %}
-            {% for t in tickets %}
-                <div class="ticket">
-                    <strong>ID:</strong> {{ t.id }}<br>
-                    <strong>Issue:</strong> {{ t.issue }}<br>
-                    <strong>Status:</strong> {{ t.status }}<br>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No tickets found.</p>
-        {% endif %}
+    <!-- LIVE SUPPORT FEED -->
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header">
+            <span class="vm-card-title">Live Support Feed</span>
+        </div>
+
+        <div class="vm-card-body">
+
+            <!-- LIVE FEED -->
+            <div id="support-live-list" class="vm-live-feed"></div>
+
+            <!-- STATIC INFO -->
+            <div class="vm-info-text">
+                Live updates will appear here when support events are pushed.
+            </div>
+
+        </div>
     </div>
 
 </div>
 
-</body>
-</html>
+{% endblock %}

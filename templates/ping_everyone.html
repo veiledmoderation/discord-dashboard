@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% set page_title = "Ping Everyone" %}
+
+{% block body %}
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Send Ping</span></div>
+        <div class="vm-card-body">
+
+            <form method="POST" action="/ping-everyone/send" class="vm-form">
+                <label>Channel ID</label>
+                <input class="vm-input" name="channel_id">
+
+                <label>Message</label>
+                <textarea class="vm-input" name="message"></textarea>
+
+                <button class="vm-btn vm-btn-primary">Send Ping</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Ping History</span></div>
+        <div class="vm-card-body">
+
+            {% if pings %}
+                <ul class="vm-log-list">
+                    {% for p in pings %}
+                    <li class="vm-log-item">
+                        <strong>{{ p.time }}</strong><br>
+                        {{ p.channel_id }} — {{ p.message }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty

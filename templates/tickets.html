@@ -1,57 +1,24 @@
-{% extends "layout.html" %}
-{% set active_page = "tickets" %}
+{% extends "base.html" %}
 {% set page_title = "Tickets" %}
 
-{% block content %}
-
+{% block body %}
 <div class="vm-dashboard-grid">
 
-    <!-- TICKET LIST -->
     <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">All Tickets</span>
-        </div>
-
+        <div class="vm-card-header"><span class="vm-card-title">Tickets</span></div>
         <div class="vm-card-body">
 
             {% if tickets %}
-                <table class="vm-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>User</th>
-                            <th>Category</th>
-                            <th>Status</th>
-                            <th>Created</th>
-                            <th>View</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for t in tickets %}
-                        <tr>
-                            <td>#{{ t.id }}</td>
-                            <td>{{ t.user }}</td>
-                            <td>{{ t.category }}</td>
-                            <td>
-                                {% if t.status == "open" %}
-                                    <span class="vm-status-open">Open</span>
-                                {% elif t.status == "pending" %}
-                                    <span class="vm-status-pending">Pending</span>
-                                {% else %}
-                                    <span class="vm-status-closed">Closed</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ t.created }}</td>
-                            <td>
-                                <a href="{{ url_for('ticket_view', ticket_id=t.id) }}" class="vm-btn vm-btn-secondary">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
+                <ul class="vm-list">
+                    {% for t in tickets %}
+                    <li class="vm-list-item">
+                        <a href="/tickets/view/{{ t.id }}">
+                            <strong>{{ t.subject }}</strong>
+                            <span class="vm-tag">{{ t.status }}</span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
             {% else %}
                 <p class="vm-empty">No tickets found.</p>
             {% endif %}
@@ -59,19 +26,5 @@
         </div>
     </div>
 
-    <!-- QUICK ACTIONS -->
-    <div class="vm-card">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Quick Actions</span>
-        </div>
-
-        <div class="vm-card-body vm-quick-actions">
-            <a href="{{ url_for('dashboard') }}" class="vm-btn vm-btn-primary">Dashboard</a>
-            <a href="{{ url_for('logs') }}" class="vm-btn vm-btn-secondary">View Logs</a>
-            <a href="{{ url_for('support_tools') }}" class="vm-btn vm-btn-secondary">Support Tools</a>
-        </div>
-    </div>
-
 </div>
-
 {% endblock %}

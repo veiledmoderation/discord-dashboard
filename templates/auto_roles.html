@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% set page_title = "Autorole" %}
+
+{% block body %}
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Autorole Settings</span></div>
+        <div class="vm-card-body">
+
+            <form method="POST" action="/autorole/update" class="vm-form">
+                <label>Role ID</label>
+                <input class="vm-input" name="role_id" value="{{ config.role_id }}">
+                <button class="vm-btn vm-btn-primary">Save</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

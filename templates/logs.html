@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% set page_title = "Logs" %}
+
+{% block body %}
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Moderation Logs</span></div>
+        <div class="vm-card-body">
+            {% if mod_logs %}
+                <ul class="vm-log-list">
+                    {% for l in mod_logs %}
+                    <li class="vm-log-item">{{ l.text }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty">No moderation logs.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">Ticket Logs</span></div>
+        <div class="vm-card-body">
+            {% if ticket_logs %}
+                <ul class="vm-log-list">
+                    {% for l in ticket_logs %}
+                    <li class="vm-log-item">{{ l.text }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty">No ticket logs.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="vm-card vm-card-wide">
+        <div class="vm-card-header"><span class="vm-card-title">System Logs</span></div>
+        <div class="vm-card-body">
+            {% if system_logs %}
+                <ul class="vm-log-list">
+                    {% for l in system_logs %}
+                    <li class="vm-log-item">{{ l.text }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="vm-empty">No system logs.</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

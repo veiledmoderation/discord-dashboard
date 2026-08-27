@@ -2,18 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="/static/main.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeilMod Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cyber_animations.css') }}">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/live_updates.js') }}" defer></script>
 </head>
+
 <body>
 
-    {% include "partials/nav.html" %}
-    {% include "partials/header.html" %}
+    {% include 'partials/nav.html' %}
+    {% include 'partials/header.html' %}
 
-    <main class="page-content">
-        {% block content %}{% endblock %}
+    <main class="content">
+        {% block body %}{% endblock %}
     </main>
+
+    {% include 'partials/loading.html' %}
 
 </body>
 </html>
