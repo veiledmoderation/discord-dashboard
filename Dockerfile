@@ -3,4 +3,4 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
-CMD ["python", "bot_core/run_bot.py"]
+CMD ["python", "-m", "bot_core.run_bot"]
