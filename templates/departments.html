@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Departments</h1>
+<table class="cyber-table">
+    <tr>
+        <th>Department</th>
+        <th>Staff Count</th>
+    </tr>
+    {% for d in departments %}
+    <tr>
+        <td>{{ d.name }}</td>
+        <td>{{ d.count }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

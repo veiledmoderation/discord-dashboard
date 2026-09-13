@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{ staff.username }} — Activity Log</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        {% if staff.activity %}
+        <ul class="vm-log-list">
+            {% for a in staff.activity %}
+            <li class="vm-log-item">{{ a }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No activity recorded.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

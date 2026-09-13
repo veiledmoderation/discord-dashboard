@@ -1,34 +1,26 @@
-async function poll(endpoint, elementId) {
-    try {
-        const res = await fetch(endpoint);
-        const data = await res.json();
+const socket = io({ transports: ["websocket"] });
 
-        const box = document.getElementById(elementId);
-        if (!box) return;
+function addFeedItem(feedId, data) {
+    const feed = document.getElementById(feedId);
+    if (!feed) return;
 
-        box.innerHTML = "";
+    const item = document.createElement("div");
+    item.className = "vm-log-item";
+    item.innerHTML = `
+        <span class="vm-log-time">${data.time}</span>
+        <span class="vm-log-text">${data.text}</span>
+    `;
 
-        data.forEach(item => {
-            const div = document.createElement("div");
-            div.className = "vm-log-item";
-            div.innerHTML = `
-                <span class="vm-log-time">${item.time}</span>
-                <span class="vm-log-text">${item.text}</span>
-            `;
-            box.appendChild(div);
-        });
+    feed.prepend(item);
 
-    } catch (err) {
-        console.error("Live update error:", err);
+    while (feed.children.length > 50) {
+        feed.removeChild(feed.lastChild);
     }
 }
 
-setInterval(() => {
-    poll("/api/live/dashboard", "dashboard-live-list");
-    poll("/api/live/tickets", "tickets-live-list");
-    poll("/api/live/ticket", "ticket-live-list");
-    poll("/api/live/qna", "qna-live-list");
-    poll("/api/live/autorole", "autorole-live-list");
-    poll("/api/live/announcement", "announcement-live-list");
-    poll("/api/live/ping", "ping-live-list");
-}, 3000);
+socket.on("tickets_feed", (data) => addFeedItem("ticket-feed", data));
+socket.on("appeals_feed", (data) => addFeedItem("appeal-feed", data));
+socket.on("staff_reports_feed", (data) => addFeedItem("staff-report-feed", data));
+socket.on("sla_feed", (data) => addFeedItem("sla-feed", data));
+socket.on("priority_feed", (data) => addFeedItem("priority-feed", data));
+socket.on("assignment_feed", (data) => addFeedItem("assignment-feed", data));

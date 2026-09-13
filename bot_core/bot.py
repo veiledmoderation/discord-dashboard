@@ -5,10 +5,6 @@ from discord.ext import commands
 from discord import app_commands
 from pymongo import MongoClient
 
-# ============================
-# Load Environment Variables
-# ============================
-
 load_dotenv()
 
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -28,19 +24,14 @@ STAFF_ROLE_ID = os.getenv("STAFF_ROLE_ID")
 AUTOROLE_ROLE_ID = os.getenv("AUTOROLE_ROLE_ID")
 TICKET_CATEGORY_ID = os.getenv("TICKET_CATEGORY_ID")
 
-# ============================
-# MongoDB
-# ============================
-
 client = MongoClient(mongo_uri)
 db = client["veilmodwebsite"]
 
 def get_config():
     return db["config"].find_one({"server_id": str(RITUALS_ID)}) or {}
 
-# ============================
-# Bot Setup
-# ============================
+# ===== IMPORT RANK + DEPARTMENT FUNCTIONS (NO circular import) =====
+from bot_core.run_bot import get_rank, get_department
 
 intents = discord.Intents.all()
 intents.message_content = True
@@ -51,15 +42,11 @@ bot = commands.Bot(
     help_command=None
 )
 
-# ============================
-# Events
-# ============================
-
+# ===== EVENTS =====
 @bot.event
 async def on_ready():
     print(f"[BOT] Online as {bot.user}")
 
-    # Sync slash commands to guild only (instant)
     try:
         guild = discord.Object(id=RITUALS_ID)
         synced = await bot.tree.sync(guild=guild)
@@ -67,34 +54,54 @@ async def on_ready():
     except Exception as e:
         print(f"[BOT] Slash sync error: {e}")
 
-    # Save guild channels for dashboard dropdown
     guild_obj = bot.get_guild(RITUALS_ID)
     if guild_obj:
         channels = [{"id": ch.id, "name": ch.name} for ch in guild_obj.text_channels]
         db["settings"].update_one({}, {"$set": {"guild_channels": channels}}, upsert=True)
         print("[BOT] Synced guild channels to dashboard.")
 
+        # ===== STAFF SYNC =====
+        for member in guild_obj.members:
+            rank = get_rank(member)
+            department = get_department(member)
+
+            db["staff"].update_one(
+                {"user_id": str(member.id)},
+                {
+                    "$set": {
+                        "username": member.name,
+                        "rank": rank,
+                        "department": department,
+                        "status": "active"
+                    }
+                },
+                upsert=True
+            )
+
+        print("[BOT] Staff synced to dashboard.")
+
 @bot.event
-async def on_member_join(member):
-    cfg = get_config()
-    channel_id = cfg.get("welcome_channel")
-    message = cfg.get("welcome_message")
+async def on_member_update(before, after):
+    before_roles = set(r.id for r in before.roles)
+    after_roles = set(r.id for r in after.roles)
 
-    if channel_id and message:
-        channel = member.guild.get_channel(int(channel_id))
-        if channel:
-            await channel.send(message.replace("{user}", member.mention))
+    if before_roles != after_roles:
+        rank = get_rank(after)
+        department = get_department(after)
 
-    auto_role = cfg.get("auto_role") or AUTOROLE_ROLE_ID
-    if auto_role:
-        role = member.guild.get_role(int(auto_role))
-        if role:
-            await member.add_roles(role)
+        db["staff"].update_one(
+            {"user_id": str(after.id)},
+            {
+                "$set": {
+                    "username": after.name,
+                    "rank": rank,
+                    "department": department
+                }
+            },
+            upsert=True
+        )
 
-# ============================
-# Moderation Logging
-# ============================
-
+# ===== MODERATION LOGGING =====
 async def log_action(action, staff, target, reason):
     db["moderation_logs"].insert_one({
         "action": action,
@@ -104,10 +111,7 @@ async def log_action(action, staff, target, reason):
         "timestamp": discord.utils.utcnow()
     })
 
-# ============================
-# Prefix Commands (!)
-# ============================
-
+# ===== PREFIX COMMANDS =====
 @bot.command()
 async def ping(ctx):
     await ctx.send("Pong!")
@@ -131,10 +135,7 @@ async def warn(ctx, member: discord.Member, *, reason="No reason provided"):
     await log_action("warn", ctx.author.name, member, reason)
     await ctx.send(f"{member.mention} has been warned: {reason}")
 
-# ============================
-# Announcements (Prefix)
-# ============================
-
+# ===== ANNOUNCEMENTS =====
 @bot.command()
 async def announce(ctx, *, message):
     cfg = get_config()
@@ -150,10 +151,7 @@ async def announce(ctx, *, message):
     await channel.send(message)
     await ctx.send("Announcement sent.")
 
-# ============================
-# Ping Everyone (Prefix)
-# ============================
-
+# ===== PING EVERYONE =====
 @bot.command()
 async def pingall(ctx, *, message):
     cfg = get_config()
@@ -169,50 +167,12 @@ async def pingall(ctx, *, message):
     await channel.send(f"@everyone {message}")
     await ctx.send("Ping sent.")
 
-# ============================
-# Slash Commands (/)
-# ============================
-
+# ===== SLASH COMMANDS =====
 @bot.tree.command(name="ping", description="Ping test")
 async def ping_slash(interaction: discord.Interaction):
     await interaction.response.send_message("Pong!", ephemeral=True)
 
-@bot.tree.command(name="announce", description="Send an announcement")
-@app_commands.describe(message="Announcement message")
-async def announce_slash(interaction: discord.Interaction, message: str):
-    cfg = get_config()
-    channel_id = cfg.get("announcement_channel")
-
-    if not channel_id:
-        return await interaction.response.send_message("Announcement channel not set.", ephemeral=True)
-
-    channel = interaction.guild.get_channel(int(channel_id))
-    if not channel:
-        return await interaction.response.send_message("Announcement channel not found.", ephemeral=True)
-
-    await channel.send(message)
-    await interaction.response.send_message("Announcement sent.", ephemeral=True)
-
-@bot.tree.command(name="pingall", description="Ping everyone in the selected channel")
-@app_commands.describe(message="Message to send")
-async def pingall_slash(interaction: discord.Interaction, message: str):
-    cfg = get_config()
-    channel_id = cfg.get("ping_channel")
-
-    if not channel_id:
-        return await interaction.response.send_message("Ping channel not set.", ephemeral=True)
-
-    channel = interaction.guild.get_channel(int(channel_id))
-    if not channel:
-        return await interaction.response.send_message("Ping channel not found.", ephemeral=True)
-
-    await channel.send(f"@everyone {message}")
-    await interaction.response.send_message("Ping sent.", ephemeral=True)
-
-# ============================
-# QnA System
-# ============================
-
+# ===== QNA SYSTEM =====
 @bot.event
 async def on_message(message):
     if message.author.bot:
@@ -237,10 +197,14 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-# ============================
-# Run Bot
-# ============================
+# ===== SUPPORT EXTENSIONS =====
+async def setup_hook():
+    await bot.load_extension("bot_core.bot_main_portal")
+    await bot.load_extension("bot_core.bot_support_system")
 
+bot.setup_hook = setup_hook
+
+# ===== RUN BOT =====
 if TOKEN is None:
     raise ValueError("DISCORD_BOT_TOKEN is missing from .env")
 

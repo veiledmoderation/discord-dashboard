@@ -7,10 +7,8 @@ db = client["veilmodwebsite"]
 
 autorole_col = db["autorole"]
 
-
 def get_config():
-    return autorole_col.find_one() or {"role_id": None}
-
+    return autorole_col.find_one() or {}
 
 def update_config(role_id):
     autorole_col.update_one({}, {"$set": {"role_id": role_id}}, upsert=True)

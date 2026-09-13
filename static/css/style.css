@@ -14,6 +14,12 @@ h1 {
     text-shadow: 0 0 10px #0099ff;
 }
 
+.page-title {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 /* ===== SIDEBAR ===== */
 
 .vm-sidebar {
@@ -232,4 +238,168 @@ h1 {
 .vm-error {
     color: #ff6666;
     margin-top: 10px;
+}
+
+/* ========================================================= */
+/* ===================== STAFF LIST ======================== */
+/* ========================================================= */
+
+.staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 25px;
+}
+
+.staff-card {
+    background: rgba(0,0,0,0.6);
+    border: 2px solid #0ff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #0ff;
+    transition: 0.2s;
+}
+
+.staff-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 30px #0ff;
+}
+
+.staff-avatar img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.staff-info h2 {
+    margin: 0;
+    font-size: 1.6em;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin: 5px 3px;
+    border-radius: 6px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+
+.rank { background: #ff00ff; }
+.dept { background: #00aaff; }
+.status-active { background: #00ff00; }
+.status-inactive { background: #ff0000; }
+
+.staff-stats {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stat label {
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+.stat span {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.staff-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cyber-button.small {
+    padding: 6px 12px;
+    font-size: 0.85em;
+}
+
+.cyber-button.green {
+    background: #00ff00;
+    color: black;
+}
+
+.cyber-button.disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+/* ===== SLA COLORS ===== */
+
+.sla-green { background: rgba(0,255,0,0.15); }
+.sla-yellow { background: rgba(255,255,0,0.15); }
+.sla-red { background: rgba(255,0,0,0.15); }
+
+/* ===== PRIORITY COLORS ===== */
+
+.priority-low { color: #66ccff; }
+.priority-medium { color: #ffff66; }
+.priority-high { color: #ff9933; }
+.priority-critical { color: #ff3333; }
+
+/* ===== SUPPORT BUTTONS ===== */
+
+.cyber-button {
+    background: #0ff;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.cyber-button:hover {
+    background: #fff;
+}
+
+/* ===== SUPPORT CARDS ===== */
+
+.support-card {
+    background: rgba(0,0,0,0.6);
+    border: 2px solid #0099ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #0099ff;
+}
+
+/* ===== APPEALS TABLE ===== */
+
+.appeals-table td {
+    padding: 10px;
+    border-bottom: 1px solid #334466;
+}
+
+/* ===== TICKET VIEW ===== */
+
+.ticket-message {
+    background: #0f1a33;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #334466;
+    margin-top: 10px;
+}
+
+/* ===== EVIDENCE LIST ===== */
+
+.evidence-item {
+    padding: 10px;
+    border-bottom: 1px solid #334466;
+}
+
+/* ===== ANIMATIONS COMPAT ===== */
+
+.glow {
+    animation: glowPulse 2s infinite;
+}
+
+@keyframes glowPulse {
+    0% { box-shadow: 0 0 10px #00ffff; }
+    50% { box-shadow: 0 0 25px #00ffff; }
+    100% { box-shadow: 0 0 10px #00ffff; }
 }

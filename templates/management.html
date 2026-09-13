@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="cyber-title mb-4">Management Team</h2>
+
+{% if staff|length == 0 %}
+    <div class="cyber-card">
+        <p>No management staff found.</p>
+    </div>
+{% else %}
+
+<div class="row g-4">
+
+    {% for member in staff %}
+        <div class="col-md-4">
+            <div class="cyber-card">
+
+                <h4 class="mb-1">{{ member.username }}</h4>
+
+                <p class="mb-1">
+                    <strong>Rank:</strong> {{ member.rank }}
+                </p>
+
+                <p class="mb-1">
+                    <strong>ID:</strong> {{ member.user_id }}
+                </p>
+
+                {% if member.departments %}
+                    <p class="mb-2"><strong>Departments:</strong></p>
+                    <ul class="mb-3">
+                        {% for dep in member.departments %}
+                            <li>{{ dep }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="mb-3"><strong>Departments:</strong> None</p>
+                {% endif %}
+
+                <a href="/staff/profile/{{ member.user_id }}" class="btn btn-info w-100">
+                    View Profile
+                </a>
+
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

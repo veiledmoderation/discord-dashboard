@@ -1,60 +1,83 @@
-{% extends "layout.html" %}
-{% set active_page = "engagement" %}
-{% set page_title = "Engagement Tools" %}
-
+{% extends "base.html" %}
 {% block content %}
 
-<div class="vm-dashboard-grid">
+<h2 class="cyber-title mb-4">Engagement Tools</h2>
 
-    <!-- ENGAGEMENT ACTIONS -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Engagement Actions</span>
-        </div>
+<div class="row g-4">
 
-        <div class="vm-card-body">
-            <div class="vm-engagement-actions">
+    <!-- SEND ENGAGEMENT MESSAGE -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Send Engagement Message</h4>
 
-                <a href="/engagement/welcome" class="vm-btn vm-btn-primary">
-                    Welcome Messages
-                </a>
+            <form method="POST" action="/engagement/send">
 
-                <a href="/engagement/auto_roles" class="vm-btn vm-btn-secondary">
-                    Auto Roles
-                </a>
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" name="user_id" class="form-control"
+                           placeholder="Enter user ID" required>
+                </div>
 
-                <a href="/engagement/announcements" class="vm-btn vm-btn-secondary">
-                    Announcements
-                </a>
+                <div class="mb-3">
+                    <label class="form-label">Message</label>
+                    <textarea name="message" class="form-control" rows="4"
+                              placeholder="Write your engagement message..." required></textarea>
+                </div>
 
-                <form action="/engagement/ping" method="POST" class="vm-form vm-inline-form">
-                    <input type="text" name="message" class="vm-input" placeholder="Ping message…" required>
-                    <button class="vm-btn vm-btn-danger">Ping Everyone</button>
-                </form>
+                <button class="btn btn-info w-100">Send Engagement</button>
 
-            </div>
+            </form>
         </div>
     </div>
 
-    <!-- LIVE ENGAGEMENT FEED -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Live Engagement Feed</span>
-        </div>
+    <!-- COMMUNITY BOOST -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Community Boost</h4>
 
-        <div class="vm-card-body">
+            <form method="POST" action="/engagement/boost">
 
-            <!-- LIVE FEED -->
-            <div id="engagement-live-list" class="vm-live-feed"></div>
+                <div class="mb-3">
+                    <label class="form-label">Boost Type</label>
+                    <select name="boost_type" class="form-select">
+                        <option value="motivation">Motivation Message</option>
+                        <option value="reminder">Friendly Reminder</option>
+                        <option value="event">Event Promotion</option>
+                        <option value="thanks">Thank You Message</option>
+                    </select>
+                </div>
 
-            <!-- STATIC INFO -->
-            <div class="vm-info-text">
-                Engagement events (welcome messages, auto roles, announcements, pings) will appear here in real time.
-            </div>
+                <div class="mb-3">
+                    <label class="form-label">Custom Text (optional)</label>
+                    <textarea name="custom" class="form-control" rows="3"
+                              placeholder="Optional custom message..."></textarea>
+                </div>
 
+                <button class="btn btn-info w-100">Send Boost</button>
+
+            </form>
         </div>
     </div>
 
+</div>
+
+<hr class="my-4" style="border-color:#00eaff;">
+
+<!-- ENGAGEMENT LOGS -->
+<h3 class="cyber-title mb-3">Recent Engagement Logs</h3>
+
+<div class="cyber-card">
+    {% if logs|length == 0 %}
+        <p>No engagement logs available.</p>
+    {% else %}
+        <ul class="list-group">
+            {% for log in logs %}
+                <li class="list-group-item bg-dark text-light">
+                    <strong>{{ log.time }}</strong> — {{ log.text }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 
 {% endblock %}

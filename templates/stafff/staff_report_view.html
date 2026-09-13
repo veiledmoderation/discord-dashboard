@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Report #{{ report._id }}</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        <p><strong>Staff:</strong> {{ report.staff_name }}</p>
+        <p><strong>Time:</strong> {{ report.time }}</p>
+        <p><strong>Details:</strong></p>
+        <p>{{ report.text }}</p>
+
+    </div>
+</div>
+
+{% endblock %}

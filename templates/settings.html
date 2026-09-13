@@ -1,32 +1,15 @@
 {% extends "base.html" %}
-{% set page_title = "Settings" %}
-
-{% block body %}
-<div class="vm-dashboard-grid">
-
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header"><span class="vm-card-title">Settings</span></div>
-        <div class="vm-card-body">
-
-            <form method="POST" action="/settings/update" class="vm-form">
-
-                <label>Prefix</label>
-                <input class="vm-input" name="prefix" value="{{ settings.prefix }}">
-
-                <label>Log Channel</label>
-                <input class="vm-input" name="log_channel" value="{{ settings.log_channel }}">
-
-                <label>Staff Role</label>
-                <input class="vm-input" name="staff_role" value="{{ settings.staff_role }}">
-
-                <label>Ticket Category</label>
-                <input class="vm-input" name="ticket_category" value="{{ settings.ticket_category }}">
-
-                <button class="vm-btn vm-btn-primary">Save</button>
-            </form>
-
-        </div>
-    </div>
-
-</div>
+{% block content %}
+<h1>Settings</h1>
+<form method="POST" action="/settings/update" class="cyber-form">
+    <label>Prefix</label>
+    <input type="text" name="prefix" class="cyber-input" value="{{ settings.prefix or '!' }}">
+    <label>Log Channel ID</label>
+    <input type="text" name="log_channel" class="cyber-input" value="{{ settings.log_channel or '' }}">
+    <label>Staff Role ID</label>
+    <input type="text" name="staff_role" class="cyber-input" value="{{ settings.staff_role or '' }}">
+    <label>Ticket Category ID</label>
+    <input type="text" name="ticket_category" class="cyber-input" value="{{ settings.ticket_category or '' }}">
+    <button class="cyber-button">Save Settings</button>
+</form>
 {% endblock %}

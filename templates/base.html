@@ -2,27 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VeilMod Dashboard</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cyber_animations.css') }}">
-
-    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/live_updates.js') }}" defer></script>
+    <title>Rituals Staff Dashboard</title>
+    <link rel="stylesheet" href="/static/css/cyber.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
-
-<body>
-
-    {% include 'partials/nav.html' %}
-    {% include 'partials/header.html' %}
-
-    <main class="content">
-        {% block body %}{% endblock %}
-    </main>
-
-    {% include 'partials/loading.html' %}
-
+<body class="cyber-body">
+    <div class="cyber-shell">
+        <header class="cyber-header">
+            <div class="logo">RITUALS STAFF PANEL</div>
+            <nav class="cyber-nav">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/staff">Staff</a>
+                <a href="/tickets">Tickets</a>
+                <a href="/appeals">Appeals</a>
+                <a href="/staff-reports">Staff Reports</a>
+                <a href="/departments">Departments</a>
+                <a href="/queue">Queue</a>
+                <a href="/analytics/staff">Analytics</a>
+                <a href="/logs">Logs</a>
+                <a href="/settings">Settings</a>
+            </nav>
+        </header>
+        <main class="cyber-main">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    <script src="/static/js/live_updates.js"></script>
 </body>
 </html>

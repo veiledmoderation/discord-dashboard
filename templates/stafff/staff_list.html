@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="page-title">Staff Directory</h1>
+
+<div class="staff-grid">
+    {% for s in staff %}
+    <div class="staff-card">
+
+        <!-- Avatar -->
+        <div class="staff-avatar">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed={{ s.username }}" alt="avatar">
+        </div>
+
+        <!-- Name + Rank -->
+        <div class="staff-info">
+            <h2>{{ s.username }}</h2>
+            <span class="badge rank">{{ s.rank }}</span>
+            <span class="badge dept">{{ s.department }}</span>
+            <span class="badge status-{{ s.status }}">{{ s.status }}</span>
+        </div>
+
+        <!-- Stats -->
+        <div class="staff-stats">
+            <div class="stat">
+                <label>Tickets (Month)</label>
+                <span>{{ s.tickets_month or 0 }}</span>
+            </div>
+            <div class="stat">
+                <label>Tickets (Total)</label>
+                <span>{{ s.tickets_total or 0 }}</span>
+            </div>
+            <div class="stat">
+                <label>Rating Avg</label>
+                <span>{{ s.rating_avg or 0 }}</span>
+            </div>
+            <div class="stat">
+                <label>Rating Count</label>
+                <span>{{ s.rating_count or 0 }}</span>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="staff-actions">
+            <a href="/staff/profile/{{ s.user_id }}" class="cyber-button small">Profile</a>
+            <a href="/staff/activity/{{ s.user_id }}" class="cyber-button small">Activity</a>
+
+            {% if s.status == "active" %}
+            <button class="cyber-button small green" onclick="dmStaff('{{ s.user_id }}')">
+                DM Staff
+            </button>
+            {% else %}
+            <button class="cyber-button small disabled">Offline</button>
+            {% endif %}
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+function dmStaff(id) {
+    alert("DM feature is handled by the bot. Staff ID: " + id);
+}
+</script>
+
+{% endblock %}

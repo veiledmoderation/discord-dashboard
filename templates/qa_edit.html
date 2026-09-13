@@ -1,23 +1,10 @@
 {% extends "base.html" %}
-{% set page_title = "Edit Q&A" %}
-
-{% block body %}
-<div class="vm-dashboard-grid">
-
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header"><span class="vm-card-title">Edit Q&A</span></div>
-        <div class="vm-card-body">
-
-            <p><strong>Question:</strong> {{ question.question }}</p>
-
-            <form method="POST" class="vm-form">
-                <label>Answer</label>
-                <textarea name="answer" class="vm-input">{{ question.answer }}</textarea>
-                <button class="vm-btn vm-btn-primary">Save</button>
-            </form>
-
-        </div>
-    </div>
-
-</div>
+{% block content %}
+<h1>Edit Q&A</h1>
+<p><strong>Question:</strong> {{ question.question }}</p>
+<form method="POST" class="cyber-form">
+    <label>Answer</label>
+    <textarea name="answer" class="cyber-textarea">{{ question.answer }}</textarea>
+    <button class="cyber-button">Save</button>
+</form>
 {% endblock %}

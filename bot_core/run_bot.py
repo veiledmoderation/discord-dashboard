@@ -1,35 +1,44 @@
-import os
-import threading
-from dotenv import load_dotenv
+# bot_core/run_bot.py
 
-load_dotenv()
+def get_rank(member):
+    """
+    Determine staff rank based on roles.
+    """
+    rank_order = [
+        "Owner/Founder",
+        "Same Permissions as owner/Red Lady",
+        "Community Manager",
+        "Head Director",
+        "Director",
+        "Head Of Staff",
+        "Head Of Support",
+        "Head Of Engagement",
+        "Senior Administrator",
+        "Administrator",
+        "Senior Moderator",
+        "Moderator",
+        "Trial Moderator"
+    ]
 
-# Correct import paths for repo structure
-from bot_core.bot import bot
+    for role in member.roles:
+        if role.name in rank_order:
+            return role.name
 
-try:
-    from dashboard.app import start_dashboard
-except Exception as e:
-        print("[ERROR] Could not import dashboard:", e)
-        start_dashboard = None
+    return "Member"
 
-def launch_dashboard():
-    if start_dashboard:
-        print("[DASHBOARD] Starting Flask dashboard...")
 
-        # Railway requires PORT from environment
-        port = int(os.environ.get("PORT", 5000))
+def get_department(member):
+    """
+    Determine department based on roles.
+    """
+    departments = [
+        "Support Department",
+        "Engagement Department",
+        "Multi Department"
+    ]
 
-        start_dashboard(
-            host="0.0.0.0",
-            port=port,
-            debug=False
-        )
-    else:
-        print("[DASHBOARD] Dashboard import failed; skipping startup.")
+    for role in member.roles:
+        if role.name in departments:
+            return role.name
 
-# Run dashboard in background thread
-threading.Thread(target=launch_dashboard, daemon=True).start()
-
-TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-bot.run(TOKEN)
+    return "None"

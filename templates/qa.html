@@ -1,30 +1,20 @@
 {% extends "base.html" %}
-{% set page_title = "Q&A Manager" %}
-
-{% block body %}
-<div class="vm-dashboard-grid">
-
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header"><span class="vm-card-title">Questions</span></div>
-        <div class="vm-card-body">
-
-            {% if questions %}
-                <ul class="vm-list">
-                    {% for q in questions %}
-                    <li class="vm-list-item">
-                        <a href="/qna/edit/{{ q.id }}">
-                            <strong>{{ q.question }}</strong>
-                            <span class="vm-tag">{{ q.answer }}</span>
-                        </a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="vm-empty">No questions found.</p>
-            {% endif %}
-
-        </div>
-    </div>
-
-</div>
+{% block content %}
+<h1>Q&A</h1>
+<table class="cyber-table">
+    <tr>
+        <th>ID</th>
+        <th>Question</th>
+        <th>Answer</th>
+        <th>Edit</th>
+    </tr>
+    {% for q in questions %}
+    <tr>
+        <td>{{ q.id }}</td>
+        <td>{{ q.question }}</td>
+        <td>{{ q.answer }}</td>
+        <td><a href="/qna/edit/{{ q.id }}">Edit</a></td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

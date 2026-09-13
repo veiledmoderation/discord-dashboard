@@ -1,69 +1,141 @@
-{% extends "layout.html" %}
-{% set active_page = "moderation" %}
-{% set page_title = "Moderation Tools" %}
-
+{% extends "base.html" %}
 {% block content %}
 
-<div class="vm-dashboard-grid">
+<h2 class="cyber-title mb-4">Moderation Tools</h2>
 
-    <!-- MODERATION ACTIONS -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Moderation Actions</span>
-        </div>
+<div class="row g-4">
 
-        <div class="vm-card-body">
-            <form action="/moderation/action" method="POST" class="vm-form">
+    <!-- WARN USER -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Warn User</h4>
 
-                <div class="vm-form-group">
-                    <label>User ID</label>
-                    <input type="text" name="user_id" class="vm-input" required>
+            <form method="POST" action="/mod/warn">
+
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" name="user_id" class="form-control"
+                           placeholder="Enter user ID" required>
                 </div>
 
-                <div class="vm-form-group">
-                    <label>Action</label>
-                    <select name="action" class="vm-input" required>
-                        <option value="warn">Warn</option>
-                        <option value="kick">Kick</option>
-                        <option value="ban">Ban</option>
-                    </select>
+                <div class="mb-3">
+                    <label class="form-label">Reason</label>
+                    <textarea name="reason" class="form-control" rows="3"
+                              placeholder="Reason for warning..." required></textarea>
                 </div>
 
-                <div class="vm-form-group">
-                    <label>Reason</label>
-                    <textarea name="reason" class="vm-textarea" rows="3" required></textarea>
-                </div>
+                <button class="btn btn-warning w-100">Issue Warning</button>
 
-                <button class="vm-btn vm-btn-primary">Submit Action</button>
             </form>
         </div>
     </div>
 
-    <!-- MODERATION LOGS (LIVE) -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Moderation Logs</span>
-        </div>
+    <!-- TIMEOUT USER -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Timeout User</h4>
 
-        <div class="vm-card-body">
+            <form method="POST" action="/mod/timeout">
 
-            <!-- LIVE FEED -->
-            <div id="moderation-live-list" class="vm-live-feed"></div>
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" name="user_id" class="form-control"
+                           placeholder="Enter user ID" required>
+                </div>
 
-            <!-- EXISTING LOGS -->
-            {% for log in logs %}
-            <div class="vm-log-item">
-                <strong>{{ log.action }}</strong><br>
-                Staff: {{ log.staff_name }}<br>
-                Target: {{ log.target_user_id }}<br>
-                Reason: {{ log.reason }}<br>
-                Time: {{ log.timestamp }}
-            </div>
-            {% endfor %}
+                <div class="mb-3">
+                    <label class="form-label">Duration (minutes)</label>
+                    <input type="number" name="duration" class="form-control"
+                           placeholder="e.g. 10" required>
+                </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Reason</label>
+                    <textarea name="reason" class="form-control" rows="3"
+                              placeholder="Reason for timeout..." required></textarea>
+                </div>
+
+                <button class="btn btn-info w-100">Apply Timeout</button>
+
+            </form>
         </div>
     </div>
 
+</div>
+
+<hr class="my-4" style="border-color:#00eaff;">
+
+<div class="row g-4">
+
+    <!-- KICK USER -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Kick User</h4>
+
+            <form method="POST" action="/mod/kick">
+
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" name="user_id" class="form-control"
+                           placeholder="Enter user ID" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Reason</label>
+                    <textarea name="reason" class="form-control" rows="3"
+                              placeholder="Reason for kick..." required></textarea>
+                </div>
+
+                <button class="btn btn-danger w-100">Kick User</button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- BAN USER -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Ban User</h4>
+
+            <form method="POST" action="/mod/ban">
+
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" name="user_id" class="form-control"
+                           placeholder="Enter user ID" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Reason</label>
+                    <textarea name="reason" class="form-control" rows="3"
+                              placeholder="Reason for ban..." required></textarea>
+                </div>
+
+                <button class="btn btn-danger w-100">Ban User</button>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-4" style="border-color:#00eaff;">
+
+<!-- MOD LOGS -->
+<h3 class="cyber-title mb-3">Recent Moderation Logs</h3>
+
+<div class="cyber-card">
+    {% if logs|length == 0 %}
+        <p>No moderation logs available.</p>
+    {% else %}
+        <ul class="list-group">
+            {% for log in logs %}
+                <li class="list-group-item bg-dark text-light">
+                    <strong>{{ log.time }}</strong> — {{ log.text }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 
 {% endblock %}

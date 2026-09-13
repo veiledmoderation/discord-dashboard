@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Staff Analytics</h1>
+<table class="cyber-table">
+    <tr>
+        <th>Username</th>
+        <th>Rank</th>
+        <th>Department</th>
+        <th>Tickets (Month)</th>
+        <th>Tickets (Total)</th>
+        <th>Rating Avg</th>
+        <th>Rating Count</th>
+    </tr>
+    {% for s in staff %}
+    <tr>
+        <td>{{ s.username }}</td>
+        <td>{{ s.rank }}</td>
+        <td>{{ s.department }}</td>
+        <td>{{ s.tickets_month or 0 }}</td>
+        <td>{{ s.tickets_total or 0 }}</td>
+        <td>{{ s.rating_avg or 0 }}</td>
+        <td>{{ s.rating_count or 0 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

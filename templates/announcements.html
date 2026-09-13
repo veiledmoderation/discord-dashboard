@@ -1,64 +1,26 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block content %}
+<h1>Announcements</h1>
 
-<h2>Announcements</h2>
+<h2>Create Announcement</h2>
+<form method="POST" action="/announcements/create" class="cyber-form">
+    <label>Title</label>
+    <input type="text" name="title" class="cyber-input">
+    <label>Content</label>
+    <textarea name="content" class="cyber-textarea"></textarea>
+    <label>Channel</label>
+    <select name="channel_id" class="cyber-select">
+        {% for ch in channels %}
+        <option value="{{ ch.id }}">{{ ch.name }} ({{ ch.id }})</option>
+        {% endfor %}
+    </select>
+    <button class="cyber-button">Create Announcement</button>
+</form>
 
-<div class="vm-dashboard-grid">
-
-    <!-- CREATE ANNOUNCEMENT -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Create Announcement</span>
-        </div>
-
-        <div class="vm-card-body">
-
-            <form action="/announcements/create" method="POST" class="vm-form">
-
-                <div class="vm-form-group">
-                    <label>Select Channel</label>
-                    <select name="channel_id" class="vm-input">
-                        {% for ch in channels %}
-                        <option value="{{ ch.id }}">{{ ch.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="vm-form-group">
-                    <label>Title</label>
-                    <input type="text" name="title" class="vm-input" required>
-                </div>
-
-                <div class="vm-form-group">
-                    <label>Message</label>
-                    <textarea name="content" class="vm-textarea" rows="4" required></textarea>
-                </div>
-
-                <button class="vm-btn vm-btn-primary">Send Announcement</button>
-
-            </form>
-
-        </div>
-    </div>
-
-    <!-- ANNOUNCEMENT HISTORY -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Announcement History</span>
-        </div>
-
-        <div class="vm-card-body">
-            {% for a in announcements %}
-            <div class="vm-log-item">
-                <strong>{{ a.title }}</strong><br>
-                {{ a.content }}<br>
-                Channel: {{ a.channel_id }}<br>
-                Time: {{ a.timestamp }}
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-</div>
-
+<h2>Existing Announcements</h2>
+<ul class="cyber-list">
+    {% for a in announcements %}
+    <li><strong>{{ a.title }}</strong> — {{ a.content }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}

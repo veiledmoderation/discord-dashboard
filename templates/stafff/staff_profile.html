@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{ staff.username }} — Profile</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed={{ staff.username }}" style="width:200px">
+
+        <p><strong>Rank:</strong> {{ staff.rank }}</p>
+        <p><strong>Department:</strong> {{ staff.department }}</p>
+        <p><strong>Status:</strong> {{ staff.status }}</p>
+
+        <h3>Statistics</h3>
+        <p><strong>Tickets (Month):</strong> {{ staff.tickets_month }}</p>
+        <p><strong>Total Tickets:</strong> {{ staff.tickets_total }}</p>
+        <p><strong>Rating Avg:</strong> {{ staff.rating_avg }}</p>
+        <p><strong>Rating Count:</strong> {{ staff.rating_count }}</p>
+
+    </div>
+</div>
+
+{% endblock %}

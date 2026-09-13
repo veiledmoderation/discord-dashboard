@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Appeals</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        <table class="vm-table">
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for a in appeals %}
+            <tr>
+                <td>{{ a._id }}</td>
+                <td>{{ a.user }}</td>
+                <td>{{ a.reason }}</td>
+                <td>{{ a.status }}</td>
+                <td>
+                    <a class="vm-btn vm-btn-primary" href="/appeal/{{ a._id }}">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,57 +1,190 @@
-{% extends "layout.html" %}
-{% set active_page = "support" %}
-{% set page_title = "Support Tools" %}
-
+{% extends "base.html" %}
 {% block content %}
 
-<div class="vm-dashboard-grid">
+<h2 class="cyber-title mb-4">Support Tools</h2>
 
-    <!-- USER LOOKUP -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">User Lookup</span>
-        </div>
+<div class="row g-4">
 
-        <div class="vm-card-body">
-            <form action="/support/lookup" method="POST" class="vm-form">
+    <!-- AUTO REPLY GENERATOR -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">AI Auto‑Reply Generator</h4>
 
-                <div class="vm-form-group">
-                    <label>User ID</label>
-                    <input type="text" name="user_id" class="vm-input" required>
+            <form method="POST" action="/support_tools/generate">
+
+                <div class="mb-3">
+                    <label class="form-label">User Message</label>
+                    <textarea name="user_message" class="form-control" rows="4"
+                              placeholder="Paste the user's message..." required></textarea>
                 </div>
 
-                <button class="vm-btn vm-btn-primary">Lookup</button>
+                <button class="btn btn-info w-100">Generate Reply</button>
+
             </form>
 
-            {% if lookup %}
-            <div class="vm-lookup-result">
-                <strong>Lookup Result:</strong><br>
-                User ID: {{ lookup }}<br>
-                (Bot integration will display more details here)
-            </div>
+            {% if generated %}
+                <hr class="my-3">
+                <h5>Generated Reply:</h5>
+                <div class="bg-dark text-light p-3 rounded">
+                    {{ generated }}
+                </div>
             {% endif %}
         </div>
     </div>
 
-    <!-- LIVE SUPPORT FEED -->
-    <div class="vm-card vm-card-wide">
-        <div class="vm-card-header">
-            <span class="vm-card-title">Live Support Feed</span>
-        </div>
+    <!-- CANNED RESPONSES -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Canned Responses</h4>
 
-        <div class="vm-card-body">
+            <form method="POST" action="/support_tools/use_canned">
 
-            <!-- LIVE FEED -->
-            <div id="support-live-list" class="vm-live-feed"></div>
+                <div class="mb-3">
+                    <label class="form-label">Select Response</label>
+                    <select name="preset" class="form-select">
+                        <option value="faq">FAQ Information</option>
+                        <option value="rules">Server Rules Reminder</option>
+                        <option value="contact">Contact Staff</option>
+                        <option value="report">How to Report a User</option>
+                        <option value="ticket">How to Open a Ticket</option>
+                        <option value="thanks">Thank You Message</option>
+                        <option value="delay">Response Delay Apology</option>
+                    </select>
+                </div>
 
-            <!-- STATIC INFO -->
-            <div class="vm-info-text">
-                Live updates will appear here when support events are pushed.
-            </div>
+                <button class="btn btn-info w-100">Insert Preset</button>
 
+            </form>
+
+            {% if canned %}
+                <hr class="my-3">
+                <h5>Preset Output:</h5>
+                <div class="bg-dark text-light p-3 rounded">
+                    {{ canned }}
+                </div>
+            {% endif %}
         </div>
     </div>
 
+</div>
+
+<hr class="my-4" style="border-color:#00eaff;">
+
+<div class="row g-4">
+
+    <!-- USER HISTORY LOOKUP -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">User History Lookup</h4>
+
+            <form method="GET" action="/support_tools/user_history">
+
+                <div class="mb-3">
+                    <label class="form-label">User ID</label>
+                    <input type="text" name="user_id" class="form-control"
+                           placeholder="Enter user ID" required>
+                </div>
+
+                <button class="btn btn-info w-100">View History</button>
+
+            </form>
+
+            {% if history %}
+                <hr class="my-3">
+                <h5>Support History:</h5>
+                <ul class="list-group">
+                    {% for h in history %}
+                        <li class="list-group-item bg-dark text-light">
+                            <strong>{{ h.time }}</strong> — {{ h.subject }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- QUICK SUPPORT ACTIONS -->
+    <div class="col-md-6">
+        <div class="cyber-card">
+            <h4 class="mb-3">Quick Support Actions</h4>
+
+            <form method="POST" action="/support_tools/quick_action">
+
+                <div class="mb-3">
+                    <label class="form-label">Action</label>
+                    <select name="action" class="form-select">
+                        <option value="resolve">Mark as Resolved</option>
+                        <option value="pending">Mark as Pending</option>
+                        <option value="assign_me">Assign to Me</option>
+                        <option value="assign_other">Assign to Another Staff</option>
+                        <option value="log_note">Add Support Note</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Support ID</label>
+                    <input type="text" name="support_id" class="form-control"
+                           placeholder="Support message ID" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Extra Info (optional)</label>
+                    <textarea name="extra" class="form-control" rows="3"
+                              placeholder="Optional note or staff ID..."></textarea>
+                </div>
+
+                <button class="btn btn-info w-100">Execute Action</button>
+
+            </form>
+
+            {% if action_result %}
+                <hr class="my-3">
+                <h5>Action Result:</h5>
+                <div class="bg-dark text-light p-3 rounded">
+                    {{ action_result }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-4" style="border-color:#00eaff;">
+
+<!-- CUSTOM TEMPLATES -->
+<div class="cyber-card">
+    <h4 class="mb-3">Custom Support Templates</h4>
+
+    <form method="POST" action="/support_tools/save_template">
+
+        <div class="mb-3">
+            <label class="form-label">Template Name</label>
+            <input type="text" name="name" class="form-control"
+                   placeholder="e.g. Appeal Response" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Template Content</label>
+            <textarea name="content" class="form-control" rows="4"
+                      placeholder="Write your custom template..." required></textarea>
+        </div>
+
+        <button class="btn btn-info w-100">Save Template</button>
+
+    </form>
+
+    {% if templates %}
+        <hr class="my-3">
+        <h5>Saved Templates:</h5>
+        <ul class="list-group">
+            {% for t in templates %}
+                <li class="list-group-item bg-dark text-light">
+                    <strong>{{ t.name }}</strong><br>
+                    {{ t.content }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 
 {% endblock %}

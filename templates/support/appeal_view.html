@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Appeal #{{ appeal._id }}</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        <p><strong>User:</strong> {{ appeal.user }}</p>
+        <p><strong>Reason:</strong> {{ appeal.reason }}</p>
+        <p><strong>Status:</strong> {{ appeal.status }}</p>
+
+        <h3>Details</h3>
+        <p>{{ appeal.details }}</p>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,33 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>Rituals Staff Login</title>
+    <link rel="stylesheet" href="/static/css/cyber.css">
 </head>
-
-<body class="vm-login-body">
-
-<div class="vm-login-box">
-
-    <h1>Login</h1>
-
-    <form method="POST" action="/login">
-
-        <input type="text" name="username" class="vm-input"
-               placeholder="Username" required>
-
-        <input type="password" name="password" class="vm-input"
-               placeholder="Password" required>
-
-        <button class="vm-btn vm-btn-primary">Login</button>
-
-    </form>
-
+<body class="cyber-body">
+<div class="login-shell">
+    <h1>Staff Login</h1>
     {% if error %}
-    <p class="vm-error">{{ error }}</p>
+        <div class="error">{{ error }}</div>
     {% endif %}
-
+    <form method="POST" class="cyber-form">
+        <label>Username</label>
+        <input type="text" name="username" class="cyber-input">
+        <label>Password</label>
+        <input type="password" name="password" class="cyber-input">
+        <button class="cyber-button">Login</button>
+    </form>
 </div>
-
 </body>
 </html>

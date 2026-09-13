@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{ staff.username }} — Reports</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        {% if reports %}
+        <ul class="vm-log-list">
+            {% for r in reports %}
+            <li class="vm-log-item">
+                <span class="vm-log-time">{{ r.time }}</span>
+                <span class="vm-log-text">{{ r.text }}</span>
+                <a class="vm-btn vm-btn-primary" href="/staff/report/{{ r._id }}">View</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No reports found.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Ticket #{{ ticket._id }}</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        <p><strong>User:</strong> {{ ticket.user }}</p>
+        <p><strong>Department:</strong> {{ ticket.department }}</p>
+        <p><strong>Status:</strong> {{ ticket.status }}</p>
+
+        <h3>Message</h3>
+        <p>{{ ticket.message }}</p>
+
+        <a class="vm-btn vm-btn-primary" href="/ticket/evidence/{{ ticket._id }}">View Evidence</a>
+
+    </div>
+</div>
+
+{% endblock %}

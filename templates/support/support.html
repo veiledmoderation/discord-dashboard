@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Support Dashboard</h1>
+
+<div class="vm-dashboard-grid">
+
+    <div class="vm-card">
+        <div class="vm-card-header">
+            <h2 class="vm-card-title">Tickets</h2>
+        </div>
+        <div class="vm-card-body">
+            <a class="vm-btn vm-btn-primary" href="/tickets">View Tickets</a>
+        </div>
+    </div>
+
+    <div class="vm-card">
+        <div class="vm-card-header">
+            <h2 class="vm-card-title">Appeals</h2>
+        </div>
+        <div class="vm-card-body">
+            <a class="vm-btn vm-btn-primary" href="/appeals">View Appeals</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

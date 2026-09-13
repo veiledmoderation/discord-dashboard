@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Support Queue</h1>
+<table class="cyber-table">
+    <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Subject</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>SLA</th>
+        <th>Assigned</th>
+        <th>View</th>
+    </tr>
+    {% for t in tickets %}
+    <tr class="sla-{{ t.sla }}">
+        <td>{{ t.id }}</td>
+        <td>{{ t.username }}</td>
+        <td>{{ t.subject }}</td>
+        <td>{{ t.status }}</td>
+        <td>{{ t.priority or "low" }}</td>
+        <td>{{ t.sla }}</td>
+        <td>{{ t.assigned_staff_name or "Unassigned" }}</td>
+        <td><a href="/tickets/view/{{ t.id }}">Open</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

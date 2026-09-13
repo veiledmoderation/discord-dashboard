@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Evidence for Ticket #{{ ticket._id }}</h1>
+
+<div class="vm-card">
+    <div class="vm-card-body">
+
+        {% if evidence %}
+        <ul class="vm-log-list">
+            {% for e in evidence %}
+            <li class="vm-log-item">{{ e }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No evidence submitted.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
